@@ -1,6 +1,7 @@
 package model
 
 import (
+	"chatroom/common/message"
 	"encoding/json"
 	"fmt"
 
@@ -63,11 +64,11 @@ func (this *UserDao) Login(userId int, userPwd string) (user *User, err error) {
 	return
 }
 
-func (this *UserDao) Register(user *User) (err error) {
+func (this *UserDao) Register(user *message.User) (err error) {
 	//先从UserDao连接池中取出一个连接
 	conn := this.pool.Get()
 	defer conn.Close()
-	user, err = this.GetUserById(conn, user.UserId)
+	_, err = this.GetUserById(conn, user.UserId)
 	//用户已存在的错误
 	if err == nil {
 		err = ERROR_USER_EXITS
@@ -76,7 +77,7 @@ func (this *UserDao) Register(user *User) (err error) {
 	//用户不存在，可以创建
 	data, err := json.Marshal(user)
 	if err != nil {
-		fmt.Println("", err)
+		fmt.Println("序列化用户出错", err)
 		return
 	}
 

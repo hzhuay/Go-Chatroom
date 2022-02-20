@@ -1,9 +1,9 @@
 package main
 
 import (
-	"encoding/json"
-	"errors"
 	"fmt"
+
+	"github.com/garyburd/redigo/redis"
 )
 
 type User struct {
@@ -19,36 +19,43 @@ type Info struct {
 }
 
 func main() {
-	// conn, err := redis.Dial("tcp", "121.4.255.127:6379")
-	// if err != nil {
-	// 	fmt.Println("", err)
-	// 	return
-	// }
-	// res, err := redis.String(conn.Do("hget", "users", 100))
-	// if err != nil {
-	// 	fmt.Println("", err)
-	// 	return
-	// }
-	// fmt.Println(res)
-
-	// var user User
-	// json.Unmarshal([]byte(res), &user)
-	// fmt.Println(user)
-	info := Info{
-		Mes: "123",
-		Err: errors.New("24"),
-	}
-	user := User{
-		UserId:   1,
-		UserPwd:  "123",
-		UserName: "jack",
-		UserInfo: info,
-	}
-	res, err := json.Marshal(user)
+	conn, err := redis.Dial("tcp", "112.124.37.136:6379")
 	if err != nil {
 		fmt.Println("", err)
 		return
 	}
-	fmt.Println(string(res))
+
+	_, err = conn.Do("hset", "users", 100, "{\"userId\":100,\"userPwd\":\"123456\",\"userName\":\"jack\"}")
+	if err != nil {
+		fmt.Println("", err)
+		return
+	}
+
+	res, err := redis.String(conn.Do("hget", "users", 100))
+	if err != nil {
+		fmt.Println("", err)
+		return
+	}
+	fmt.Println(res)
+
+	// var user User
+	// json.Unmarshal([]byte(res), &user)
+	// fmt.Println(user)
+	// info := Info{
+	// 	Mes: "123",
+	// 	Err: errors.New("24"),
+	// }
+	// user := User{
+	// 	UserId:   1,
+	// 	UserPwd:  "123",
+	// 	UserName: "jack",
+	// 	UserInfo: info,
+	// }
+	// res, err := json.Marshal(user)
+	// if err != nil {
+	// 	fmt.Println("", err)
+	// 	return
+	// }
+	// fmt.Println(string(res))
 
 }

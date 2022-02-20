@@ -24,6 +24,14 @@ func (this *Processor) serverProcessMes(mes *message.Message) (err error) {
 		err = up.ServerProcessLogin(mes)
 	case message.RegisterMesType:
 		//处理注册
+		fmt.Println("serverProcessMes开始处理")
+		up := &processes.UserProcess{
+			Conn: this.Conn,
+		}
+		err = up.ServerProcessRegister(mes)
+	case message.SmsMesType:
+		smsProcess := processes.SmsProcess{}
+		smsProcess.SendGroupMes(*mes)
 	default:
 		fmt.Println("消息类型不存在！")
 	}
@@ -45,7 +53,7 @@ func (this *Processor) process2() (err error) {
 			}
 			return err
 		}
-		fmt.Println("mes = ", mes)
+		fmt.Println("process2 mes = ", mes)
 
 		err = this.serverProcessMes(&mes)
 		if err != nil {

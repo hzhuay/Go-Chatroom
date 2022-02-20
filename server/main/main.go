@@ -27,7 +27,7 @@ func initUserDao() {
 //自动调用初始化函数
 func init() {
 	//初始化连接池
-	initPool("121.4.255.127:6379", 16, 0, 300*time.Second)
+	initPool("112.124.37.136:6379", 16, 0, 300*time.Second)
 	initUserDao()
 }
 

@@ -42,12 +42,12 @@ func main() {
 			fmt.Scanf("%d\n", &userID)
 			fmt.Print("请输入用户的密码: ")
 			fmt.Scanf("%s\n", &userPwd)
-			fmt.Print("请输入用户的ID: ")
-			fmt.Scanf("%d\n", &userID)
 			fmt.Print("请输入用户的昵称: ")
 			fmt.Scanf("%s\n", &userName)
 			// loop = false
 			//创建一个UserProcess实例，完成注册
+			up := &processes.UserProcess{}
+			up.Register(userID, userPwd, userName)
 		case 3:
 			fmt.Println("退出系统")
 			return
